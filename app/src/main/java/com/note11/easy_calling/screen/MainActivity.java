@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
+import android.widget.Toast;
 
 import com.note11.easy_calling.R;
 
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setAttributes(params);
 
         //checkPermission & getPermission
-        if(!checkPermission()) getPermission();
+        if (!checkPermission()) getPermission();
 
     }
 
@@ -47,13 +48,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void getPermission() {
         //TODO 시간 있으면 GetPermission 액티비티로 기능 옮기기
-        AlertDialog.Builder gsDialog = new AlertDialog.Builder(this);
-        gsDialog.setTitle("접근성 권한이 필요합니다.");
-        gsDialog.setMessage("음량 버튼의 접근을 위해 접근성 권한이 필요합니다.");
-        gsDialog.setPositiveButton("설정하러가기", (dialog, which) ->
-                startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)))
-                .create()
-                .show();
+        AlertDialog.Builder D = new AlertDialog.Builder(this);
+        D.setTitle("접근성 권한이 필요합니다.");
+        D.setMessage("음량 버튼의 접근을 위해 접근성 권한이 필요합니다.");
+        D.setPositiveButton("설정하러가기", (dialog, which) -> {
+            startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+            Toast.makeText(this, "설치된 서비스에서 쉬운 전화걸기를 선택하여 설정을 켜주세요.", Toast.LENGTH_SHORT).show();
+        }).create().show();
     }
 
 }

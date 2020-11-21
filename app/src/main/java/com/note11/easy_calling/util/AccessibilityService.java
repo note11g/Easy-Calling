@@ -1,11 +1,18 @@
 package com.note11.easy_calling.util;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
 
 public class AccessibilityService extends android.accessibilityservice.AccessibilityService {
 
     private static final String T = "Calling";
+
+    @Override
+    protected boolean onKeyEvent(KeyEvent event) {
+        Log.d(T, "Key detected : "+event);
+        return super.onKeyEvent(event);
+    }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent ev) {
