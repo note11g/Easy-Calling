@@ -2,11 +2,17 @@ package com.note11.easy_calling.screen;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 
+import android.Manifest;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.WindowManager;
@@ -14,15 +20,22 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.Toast;
 
 import com.note11.easy_calling.R;
+import com.note11.easy_calling.data.NumberCache;
+import com.note11.easy_calling.data.NumberModel;
+import com.note11.easy_calling.databinding.ActivityMainBinding;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ActivityMainBinding binding;
+    static final int R_CALL = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         //App Screen Brightness Maximum Setting
         WindowManager.LayoutParams params = getWindow().getAttributes();
@@ -31,6 +44,17 @@ public class MainActivity extends AppCompatActivity {
 
         //checkPermission & getPermission
         if (!checkPermission()) getPermission();
+        checkCallingPermission();
+
+        binding.setPhone("");
+        binding.btnCall.setOnClickListener(v->{
+            if(binding.getPhone().isEmpty()) return;
+
+            if(NumberCache.getNumber(this)!=null)
+                NumberCache.clear(this);
+            NumberCache.setNumber(this, new NumberModel(binding.getPhone()));
+            Toast.makeText(this, "설정완료!", Toast.LENGTH_SHORT).show();
+        });
 
     }
 
@@ -44,6 +68,16 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return false;
+    }
+
+    public boolean checkCallingPermission(){
+        int pCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);
+        if (pCheck == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, R_CALL);
+            return false;
+        }
     }
 
     public void getPermission() {

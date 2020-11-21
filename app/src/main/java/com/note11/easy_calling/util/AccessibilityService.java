@@ -1,8 +1,14 @@
 package com.note11.easy_calling.util;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.Toast;
+
+import com.note11.easy_calling.data.NumberCache;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +22,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
     ExecutorService es = Executors.newFixedThreadPool(1);
     private static final String T = "Calling";
     private static boolean isRecord = false;
+    private Context context = this;
 
     public static HashMap<Integer, Long> clickTimer = new HashMap<>();
 
@@ -39,31 +46,31 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
 
     @Override
     protected boolean onKeyEvent(KeyEvent event) {
-        Log.d(T, "Key detected : "+event);
-        Log.d(T, "Key Code: "+ event.getKeyCode());
+        Log.d(T, "Key detected : " + event);
+        Log.d(T, "Key Code: " + event.getKeyCode());
 
         KeyData callMacro = macroCallClass.searchKeyCode(event.getKeyCode());
         KeyData callUser = macroUsersClass.searchKeyCode(event.getKeyCode());
-        if(callMacro != null) {
+        if (callMacro != null) {
             callMacro.isClickNow = event.getAction() == KeyEvent.ACTION_DOWN;
-            if(callMacro.isClickNow) {
+            if (callMacro.isClickNow) {
                 callMacro.clickTime = new Date().getTime();
-                if(callMacro.isLongClick) {
+                if (callMacro.isLongClick) {
                     LongButtonEventRender(macroCallClass, callMacro);
-                }else {
+                } else {
                     callMacro.isStatus = true;
                     macroCallClass.ifIsAllChecked();
                 }
             }
         }
 
-        if(callUser != null) {
+        if (callUser != null) {
             callUser.isClickNow = event.getAction() == KeyEvent.ACTION_DOWN;
-            if(callUser.isClickNow) {
+            if (callUser.isClickNow) {
                 callUser.clickTime = new Date().getTime();
-                if(callUser.isLongClick) {
+                if (callUser.isLongClick) {
                     LongButtonEventRender(macroUsersClass, callUser);
-                }else {
+                } else {
                     callUser.isStatus = true;
                     macroUsersClass.ifIsAllChecked();
                 }
@@ -73,48 +80,48 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
     }
 
     @Override
-    public void onAccessibilityEvent(AccessibilityEvent ev) {
-        //Event 가 detect 되면 called
-        Log.d(T, ev.toString());
-    }
+    public void onAccessibilityEvent(AccessibilityEvent e) {}
 
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
-        //서비스가 연결되었을때 called
-        Log.d(T, "Service is connected!");
     }
 
     @Override
-    public void onInterrupt() {
-        Log.d(T, "onInterrupted");
-    }
+    public void onInterrupt() {}
 
     private void LongButtonEventRender(MacroSystem macroSystem, KeyData keyData) {
         es.submit(new ButtonLongClickWorker(macroSystem, keyData));
     }
 
     public class MacroSystem {
-        public KeyData searchKeyCode(int key) { return null; }
-        public void ifIsAllChecked() { }
+        public KeyData searchKeyCode(int key) {
+            return null;
+        }
+
+        public void ifIsAllChecked() {
+        }
     }
 
     public class MacroCallClass extends MacroSystem {
         public ArrayList<KeyData> keyCode = new ArrayList<>();
 
         public KeyData searchKeyCode(int key) {
-            for(KeyData keyData : keyCode) {
-                if(keyData.keyCode == key) return keyData;
+            for (KeyData keyData : keyCode) {
+                if (keyData.keyCode == key) return keyData;
             }
             return null;
         }
 
         public void ifIsAllChecked() {
-            for(KeyData keyData : keyCode) {
-                if(!(keyData.isStatus && keyData.isClickNow))
+            for (KeyData keyData : keyCode) {
+                if (!(keyData.isStatus && keyData.isClickNow))
                     return;
             }
-            Log.d(T, "ifIsAllChecked[MacroCallClass] : EVENT");
+            //TODO 위 버튼 눌렀을때만 실행되도록
+            Intent i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + NumberCache.getNumber(context).getPhone()));
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
         }
     }
 
@@ -122,15 +129,15 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
         public ArrayList<KeyData> keyCode = new ArrayList<>();
 
         public KeyData searchKeyCode(int key) {
-            for(KeyData keyData : keyCode) {
-                if(keyData.keyCode == key) return keyData;
+            for (KeyData keyData : keyCode) {
+                if (keyData.keyCode == key) return keyData;
             }
             return null;
         }
 
         public void ifIsAllChecked() {
-            for(KeyData keyData : keyCode) {
-                if(!(keyData.isStatus && keyData.isClickNow))
+            for (KeyData keyData : keyCode) {
+                if (!(keyData.isStatus && keyData.isClickNow))
                     return;
             }
             Log.d(T, "ifIsAllChecked[MacroUsersClass] : EVENT");
@@ -160,14 +167,14 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
-                    if(new Date().getTime() - keyData.clickTime >= 1200 && keyData.isClickNow) {
+                    if (new Date().getTime() - keyData.clickTime >= 1200 && keyData.isClickNow) {
                         keyData.isStatus = true;
                         macroSystem.ifIsAllChecked();
                     }
                 }
             };
 
-            timer.schedule(task,1200);
+            timer.schedule(task, 1200);
         }
     }
 }
