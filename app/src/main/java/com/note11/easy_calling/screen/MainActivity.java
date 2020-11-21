@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         D.setMessage("음량 버튼의 접근을 위해 접근성 권한이 필요합니다.");
         D.setPositiveButton("설정하러가기", (dialog, which) -> {
             startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
-            Toast.makeText(this, "설치된 서비스에서 쉬운 전화걸기를 선택하여 설정을 켜주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "설치된 서비스에서 쉬운 전화걸기를 선택하여 설정을 켜주세요.", Toast.LENGTH_LONG).show();
         }).create().show();
     }
 
