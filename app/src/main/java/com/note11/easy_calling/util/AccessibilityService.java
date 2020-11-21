@@ -11,15 +11,13 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
 
     @Override
     protected boolean onKeyEvent(KeyEvent event) {
-        //using event.getKeyCode (this is Integer type)
+        //using event.getKeyCode (it is Integer type)
         //and compare with KeyEvent.KEYCODE_VOLUME_UP or KEYCODE_VOLUME_DOWN
-        if(KeyEvent.KEYCODE_VOLUME_UP == event.getKeyCode()){
-            if(event.getEventTime() - event.getDownTime() > 0){
-                Log.e(T, "Real detected Time : "+ (event.getEventTime() - event.getDownTime()));
-                if(event.getEventTime() - event.getDownTime() >= 1000)
-                    Toast.makeText(this, "길게 눌러짐", Toast.LENGTH_SHORT).show();
+        if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP)
+            if (event.getEventTime() - event.getDownTime() >= 1000) {
+                Toast.makeText(this, "길게 눌러짐", Toast.LENGTH_SHORT).show();
+                Log.e(T, "Real detected Time : " + (event.getEventTime() - event.getDownTime()));
             }
-        }
         return super.onKeyEvent(event);
     }
 
