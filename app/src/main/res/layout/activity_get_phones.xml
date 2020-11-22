@@ -7,16 +7,35 @@
     android:orientation="vertical"
     tools:context=".screen.GetPhonesActivity">
 
-    <EditText
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20px"
-        android:layout_marginTop="20px"
-        android:textColor="@color/teal_700"
-        android:hint="@string/phone_search"/>
+        android:orientation="horizontal"
+        android:padding="20px">
 
-    <ListView
-        android:id="@+id/getPhonesLV"
+        <EditText
+            android:id="@+id/searchInp"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20px"
+            android:layout_marginTop="20px"
+            android:textColor="@color/teal_700"
+            android:layout_weight="8"
+            android:inputType="text"/>
+
+        <Button
+            android:id="@+id/searchBtn"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20px"
+            android:layout_marginTop="20px"
+            android:layout_weight="2"
+            android:text="@string/phone_search"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/getPhonesRv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
