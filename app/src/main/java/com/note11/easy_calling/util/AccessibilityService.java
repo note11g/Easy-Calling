@@ -22,13 +22,16 @@ import java.util.concurrent.Executors;
 public class AccessibilityService extends android.accessibilityservice.AccessibilityService {
     ExecutorService es = Executors.newFixedThreadPool(1);
     private static final String T = "Calling";
-    private static boolean isRecord = false;
+    private static int isRecord = 0;
+    private static int getBtnLength = 0;
+    private static ArrayList<KeyData> keyCache = new ArrayList<>();
     private Context context = this;
 
     public static HashMap<Integer, Long> clickTimer = new HashMap<>();
 
     public static MacroCallClass macroCallClass;
     public static MacroUsersClass macroUsersClass;
+
 
     public AccessibilityService() {
         macroCallClass = new MacroCallClass();
@@ -45,10 +48,44 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
         macroUsersClass.keyCode.add((data));
     }
 
+    public static void recordStateChange(int state) { //0: 기록X, 1: 통화 버튼 기록, 2: 전화 목록 기록
+        isRecord = state;
+        if(isRecord == 0) {
+            keyCache.clear();
+            getBtnLength = 0;
+        }
+    }
+
     @Override
     protected boolean onKeyEvent(KeyEvent event) {
-        Log.d(T, "Key detected : " + event);
         Log.d(T, "Key Code: " + event.getKeyCode());
+
+        if(isRecord != 0) {
+            if(event.getAction() == KeyEvent.ACTION_DOWN)  getBtnLength++;
+            else {
+                getBtnLength--;
+                KeyData keyData = new KeyData();
+                keyData.keyCode = event.getKeyCode();
+                keyData.isLongClick = event.getDownTime() >= 3000;
+
+                keyCache.add(keyData);
+
+                if(getBtnLength == 0) {
+                    switch (isRecord) {
+                        case 1:
+                            macroCallClass.keyCode = keyCache;
+                            break;
+                        case 2:
+                            macroUsersClass.keyCode = keyCache;
+                            break;
+                    }
+
+                    Toast.makeText(getApplicationContext(), "기록 완료", Toast.LENGTH_SHORT).show();
+                    recordStateChange(0);
+                }
+            }
+            return super.onKeyEvent(event);
+        }
 
         KeyData callMacro = macroCallClass.searchKeyCode(event.getKeyCode());
         KeyData callUser = macroUsersClass.searchKeyCode(event.getKeyCode());
