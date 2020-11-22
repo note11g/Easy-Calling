@@ -157,6 +157,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                     return;
             }
             //TODO 위 버튼 눌렀을때만 실행되도록
+            if(NumberCache.getNumber(context).getPhone() == null) return;
             Intent i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + NumberCache.getNumber(context).getPhone()));
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);

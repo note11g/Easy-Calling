@@ -85,7 +85,7 @@ public class GetPhonesActivity extends AppCompatActivity {
         HashMap<String, String> result = new HashMap<>();
         for(String key : phoneList.keySet()) {
             String name = phoneList.get(key);
-            if(key.contains(q) || name.contains(q))
+            if(name.contains(q) || key.contains(q.replaceAll("-", "").replaceAll(" ", "")) || name.contains(q.replaceAll(" ", "")))
                 result.put(key, name);
         }
 
