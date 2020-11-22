@@ -1,9 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".screen.GetPermission">
+    xmlns:tools="http://schemas.android.com/tools">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+
+        <TextView
+            android:id="@+id/txt_permission_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:fontFamily="@font/kopubb"
+            android:text="쉬운 전화걸기를 사용하기 위해\n아래 권한을 허용해주세요."
+            android:textSize="24sp"
+            android:textColor="@color/blue_1"
+            app:layout_constraintBottom_toTopOf="@+id/txt_permission_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_permission_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:fontFamily="@font/kopubm"
+            android:text="연락처 접근 권한 : 전화번호부를 보여줄 때 사용합니다.\n\n통화 기록 권한 : 전화 기록을 보여줄 때 사용합니다.\n\n통화 걸기 권한 : 단축키로 전화를 걸 때, 혹은 숫자 단추를 눌러 전화를 걸 때 사용합니다.\n\n접근성 권한 : 빠른 실행을 위한 버튼 길게 누르기를 감지하기 위해 사용합니다."
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/btn_permission_next"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_permission_1" />
+
+        <Button
+            android:id="@+id/btn_permission_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:theme="@style/selectButtonStyle"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="16dp"
+            android:textSize="18sp"
+            android:text="다음으로"
+            android:background="@drawable/round_box"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/kopubb"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_permission_2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

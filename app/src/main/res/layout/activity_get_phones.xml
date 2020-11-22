@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".screen.GetPhonesActivity">
+    tools:context=".screen.test.GetPhonesActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20px"
             android:layout_marginTop="20px"
-            android:textColor="@color/teal_700"
+            android:textColor="@color/blue_1"
             android:layout_weight="8"
             android:inputType="text"/>
 

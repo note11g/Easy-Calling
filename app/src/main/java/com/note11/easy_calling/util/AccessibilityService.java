@@ -9,7 +9,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
 
 import com.note11.easy_calling.data.NumberCache;
-import com.note11.easy_calling.screen.GetPhonesActivity;
+import com.note11.easy_calling.screen.test.GetPhonesActivity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -156,7 +156,6 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                 if (!(keyData.isStatus && keyData.isClickNow))
                     return;
             }
-            //TODO 위 버튼 눌렀을때만 실행되도록
             Intent i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + NumberCache.getNumber(context).getPhone()));
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
@@ -214,7 +213,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                 }
             };
 
-            timer.schedule(task, 1200);
+            timer.schedule(task, 1000);
         }
     }
 }
