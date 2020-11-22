@@ -156,6 +156,8 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                 if (!(keyData.isStatus && keyData.isClickNow))
                     return;
             }
+
+            if(NumberCache.getNumber(context).getPhone() == null) return;
             Intent i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + NumberCache.getNumber(context).getPhone()));
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
