@@ -1,5 +1,6 @@
 package com.note11.easy_calling.screen;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     static final int R_CALL = 1;
+    static final int R_PHONE_NUMBERS = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         //checkPermission & getPermission
         if (!checkPermission()) getPermission();
         checkCallingPermission();
+        checkGetPhonesArrayPermission();
 
         binding.setPhone("");
         binding.btnCall.setOnClickListener(v->{
@@ -77,6 +80,34 @@ public class MainActivity extends AppCompatActivity {
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, R_CALL);
             return false;
+        }
+    }
+
+    public boolean checkGetPhonesArrayPermission() {
+        int pCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);
+        if (pCheck == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, R_PHONE_NUMBERS);
+            return false;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case R_CALL: {
+                if(ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED)
+                    finish();
+                break;
+            }
+            case R_PHONE_NUMBERS: {
+                if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
+                    finish();
+                break;
+            }
         }
     }
 

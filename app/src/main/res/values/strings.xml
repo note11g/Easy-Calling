@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">쉬운 전화걸기</string>
     <string name="access_description">음량버튼이 길게 눌리면 감지하여 등록된 번호로 전화를 걸 수 있도록 도와줍니다.</string>
+    <string name="title_activity_get_phones">MainActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="phone_search">검색</string>
 </resources>

@@ -3,6 +3,7 @@
     package="com.note11.easy_calling">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EasyCalling">
-        <activity android:name=".screen.GetPermission"></activity>
+        <activity android:name=".screen.GetPhonesActivity" />
+        <activity android:name=".screen.GetPermission" />
         <activity android:name=".screen.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,12 +26,12 @@
             android:name=".util.AccessibilityService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
-                <action android:name="android.accessibilityservice.AccessibilityService"/>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
 
             <meta-data
                 android:name="android.accessibilityservice"
-                android:resource="@xml/accessibility_service_config"/>
+                android:resource="@xml/accessibility_service_config" />
         </service>
     </application>
 
