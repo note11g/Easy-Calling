@@ -45,11 +45,10 @@ public class SetShortCutActivity extends AppCompatActivity {
         it = getItems();
 
         a.setOnItemClickListener((view, item) -> {
-            AlertDialog.Builder oD = new AlertDialog.Builder(this,
-                    android.R.style.Theme_DeviceDefault_Light_Dialog);
+            AlertDialog.Builder oD = new AlertDialog.Builder(this);
 
-            oD.setMessage(item.getName()+"님으로 빠른 전화 걸기를 선택하시겠습니까?")
-                    .setTitle("선택 확인 창")
+            oD.setTitle("선택 확인")
+                    .setMessage(item.getName()+"님으로 빠른 전화 걸기를 선택하시겠습니까?")
                     .setPositiveButton("아니오", (dialog, which) -> { return; })
                     .setNeutralButton("예", (dialog, which) -> {
                         NumberCache.setNumber(this, new NumberModel(item.getPhone()));

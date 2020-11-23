@@ -51,6 +51,8 @@ public class GetPermission extends AppCompatActivity {
         }
         if (!permissionList.isEmpty())
             ActivityCompat.requestPermissions(this, permissionList.toArray(new String[permissionList.size()]), MULTIPLE_PERMISSIONS);
+        else
+            goToNext();
     }
 
     @Override
@@ -79,7 +81,6 @@ public class GetPermission extends AppCompatActivity {
     private void getPermission2() {
         startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
         Toast.makeText(this, "설치된 서비스에서 쉬운 전화걸기를 선택하여 설정을 켜주세요.", Toast.LENGTH_LONG).show();
-        finish();
     }
 
     private void goToNext(){

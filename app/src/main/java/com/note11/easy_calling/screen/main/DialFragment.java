@@ -18,6 +18,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.note11.easy_calling.R;
+import com.note11.easy_calling.data.NumberCache;
 import com.note11.easy_calling.data.TelModel;
 import com.note11.easy_calling.databinding.FragmentDialBinding;
 
@@ -47,7 +48,8 @@ public class DialFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dial, container, false);
 
-        it = getItems();
+        if(NumberCache.getNumber(mContext)!=null)
+            it = getItems();
         settingPad();
 
         return binding.getRoot();
