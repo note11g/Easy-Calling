@@ -52,6 +52,13 @@ public class MainForOpenActivity extends AppCompatActivity {
             startActivity(new Intent(this, SetShortCutActivity.class));
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (NumberCache.getNumber(this) == null)
+            startActivity(new Intent(this, SetShortCutActivity.class));
+    }
+
     private void switchFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_main, fragment);

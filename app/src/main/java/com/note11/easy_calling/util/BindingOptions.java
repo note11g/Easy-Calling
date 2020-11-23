@@ -13,6 +13,5 @@ public class BindingOptions {
     public static void bindTelItem(RecyclerView recyclerView, ObservableArrayList<TelModel> items){
         TelAdapter adapter = (TelAdapter) recyclerView.getAdapter();
         if(adapter!=null) adapter.setItem(items);
-
     }
 }

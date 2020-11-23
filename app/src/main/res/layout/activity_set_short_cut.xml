@@ -30,12 +30,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/txt_permission_2"
+            android:id="@+id/edt_permission_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:fontFamily="@font/kopubm"
             android:hint="전화번호 또는 이름을 입력하세요"
+            android:inputType="textPersonName"
             android:textColor="@color/black"
             android:background="@drawable/round_corner"
             android:paddingHorizontal="16dp"
@@ -55,7 +56,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_permission_2"
+            app:layout_constraintTop_toBottomOf="@+id/edt_permission_1"
             app:tel="@{items}"
             tools:listitem="@layout/row_tel" />
 
