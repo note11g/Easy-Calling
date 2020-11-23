@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/kopubb"
-            android:text="@{log.name, default=`홍길동`}"
+            android:text="@{log.name!=null ? log.name:`등록정보 없음`, default=`홍길동`}"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"

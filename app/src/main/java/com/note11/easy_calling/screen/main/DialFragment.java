@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,7 +49,7 @@ public class DialFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dial, container, false);
 
-        if(NumberCache.getNumber(mContext)!=null)
+        if (NumberCache.getNumber(mContext) != null)
             it = getItems();
         settingPad();
 
@@ -72,6 +73,10 @@ public class DialFragment extends Fragment {
         binding.btnDialDel.setOnClickListener(v -> delDial());
         binding.btnDialCall.setOnClickListener(v -> calling());
         binding.btnDialDel.setOnLongClickListener(v -> delAll());
+        binding.constraintDialLike.setOnClickListener(v -> {
+            TelModel t = binding.getNowLike();
+            if (t != null) binding.setPhone(t.getPhone());
+        });
     }
 
     private void dial(String d) {
@@ -91,10 +96,8 @@ public class DialFragment extends Fragment {
         }
 
         TelModel telModel = searchBestLike(it, binding.getPhone());
-        if(telModel != null) {
-            Log.d("ASDF", "searchBestLike: " + telModel.getName() + telModel.getPhone());
-            //TODO 가장 비슷한 전화번호
-        }
+        binding.setNowLike(telModel != null ? telModel : new TelModel("", "", ""));
+
     }
 
     private void delDial() {
@@ -107,10 +110,7 @@ public class DialFragment extends Fragment {
         }
 
         TelModel telModel = searchBestLike(it, binding.getPhone());
-        if(telModel != null) {
-            Log.d("ASDF", "searchBestLike: " + telModel.getName() + telModel.getPhone());
-            //TODO 가장 비슷한 전화번호
-        }
+        binding.setNowLike(telModel != null ? telModel : new TelModel("", "", ""));
     }
 
     private void calling() {
@@ -123,6 +123,7 @@ public class DialFragment extends Fragment {
 
     private boolean delAll() {
         binding.setPhone("");
+        binding.setNowLike(new TelModel("", "", ""));
         isSeoul = false;
         return true;
     }
@@ -164,11 +165,11 @@ public class DialFragment extends Fragment {
 
     public TelModel searchBestLike(ArrayList<TelModel> datas, String phone) {
         phone = phone.replaceAll("-", "");
-        if(phone.length() == 0) return null;
+        if (phone.length() == 0) return null;
         int sublen = 9999;
         TelModel result = null;
-        for(TelModel telModel : datas) {
-            if(telModel.getPhone().contains(phone) && sublen > telModel.getPhone().length() - phone.length()) {
+        for (TelModel telModel : datas) {
+            if (telModel.getPhone().contains(phone) && sublen > telModel.getPhone().length() - phone.length()) {
                 sublen = telModel.getPhone().length() - phone.length();
                 result = telModel;
             }

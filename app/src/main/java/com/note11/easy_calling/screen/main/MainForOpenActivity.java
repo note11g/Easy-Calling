@@ -47,16 +47,13 @@ public class MainForOpenActivity extends AppCompatActivity {
         switchFragment(DialFragment.newInstance());
         binding.bottomMain.setSelectedItemId(R.id.dial);
 
-        if (!checkPermission()) startActivity(new Intent(this, GetPermission.class));
-        else if (NumberCache.getNumber(this) == null)
+        if (!checkPermission()) {
+            startActivity(new Intent(this, GetPermission.class));
+            finish();
+        }else if (NumberCache.getNumber(this) == null) {
             startActivity(new Intent(this, SetShortCutActivity.class));
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (NumberCache.getNumber(this) == null)
-            startActivity(new Intent(this, SetShortCutActivity.class));
+            finish();
+        }
     }
 
     private void switchFragment(Fragment fragment) {

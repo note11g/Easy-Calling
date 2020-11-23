@@ -24,6 +24,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
     private static final String T = "Calling";
     private static int isRecord = 0;
     private static int getBtnLength = 0;
+    private static final int DELAY_FOR_BTN = 1000;
     private static ArrayList<KeyData> keyCache = new ArrayList<>();
     private Context context = this;
 
@@ -50,7 +51,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
 
     public static void recordStateChange(int state) { //0: 기록X, 1: 통화 버튼 기록, 2: 전화 목록 기록
         isRecord = state;
-        if(isRecord == 0) {
+        if (isRecord == 0) {
             keyCache.clear();
             getBtnLength = 0;
         }
@@ -58,10 +59,9 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
 
     @Override
     protected boolean onKeyEvent(KeyEvent event) {
-        Log.d(T, "Key Code: " + event.getKeyCode());
 
-        if(isRecord != 0) {
-            if(event.getAction() == KeyEvent.ACTION_DOWN)  getBtnLength++;
+        if (isRecord != 0) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) getBtnLength++;
             else {
                 getBtnLength--;
                 KeyData keyData = new KeyData();
@@ -70,7 +70,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
 
                 keyCache.add(keyData);
 
-                if(getBtnLength == 0) {
+                if (getBtnLength == 0) {
                     switch (isRecord) {
                         case 1:
                             macroCallClass.keyCode = (ArrayList<KeyData>) keyCache.clone();
@@ -118,7 +118,8 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
     }
 
     @Override
-    public void onAccessibilityEvent(AccessibilityEvent e) {}
+    public void onAccessibilityEvent(AccessibilityEvent e) {
+    }
 
     @Override
     protected void onServiceConnected() {
@@ -126,7 +127,8 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
     }
 
     @Override
-    public void onInterrupt() {}
+    public void onInterrupt() {
+    }
 
     private void LongButtonEventRender(MacroSystem macroSystem, KeyData keyData) {
         es.submit(new ButtonLongClickWorker(macroSystem, keyData));
@@ -157,7 +159,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                     return;
             }
 
-            if(NumberCache.getNumber(context).getPhone() == null) return;
+            if (NumberCache.getNumber(context).getPhone() == null) return;
             Intent i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + NumberCache.getNumber(context).getPhone()));
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
@@ -208,14 +210,14 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
-                    if (new Date().getTime() - keyData.clickTime >= 1200 && keyData.isClickNow) {
+                    if (new Date().getTime() - keyData.clickTime >= DELAY_FOR_BTN && keyData.isClickNow) {
                         keyData.isStatus = true;
                         macroSystem.ifIsAllChecked();
                     }
                 }
             };
 
-            timer.schedule(task, 1000);
+            timer.schedule(task, DELAY_FOR_BTN);
         }
     }
 }

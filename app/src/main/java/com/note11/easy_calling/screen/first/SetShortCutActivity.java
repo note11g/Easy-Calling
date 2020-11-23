@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import com.note11.easy_calling.data.NumberCache;
 import com.note11.easy_calling.data.NumberModel;
 import com.note11.easy_calling.data.TelModel;
 import com.note11.easy_calling.databinding.ActivitySetShortCutBinding;
+import com.note11.easy_calling.screen.main.MainForOpenActivity;
 import com.note11.easy_calling.util.TelAdapter;
 
 public class SetShortCutActivity extends AppCompatActivity {
@@ -45,14 +47,15 @@ public class SetShortCutActivity extends AppCompatActivity {
         it = getItems();
 
         a.setOnItemClickListener((view, item) -> {
-            AlertDialog.Builder oD = new AlertDialog.Builder(this);
+            AlertDialog.Builder oD = new AlertDialog.Builder(this, R.style.pDialogStyle);
 
             oD.setTitle("선택 확인")
                     .setMessage(item.getName()+"님으로 빠른 전화 걸기를 선택하시겠습니까?")
-                    .setPositiveButton("아니오", (dialog, which) -> { return; })
-                    .setNeutralButton("예", (dialog, which) -> {
+                    .setNegativeButton("아니오", (dialog, which) -> { return; })
+                    .setPositiveButton("예", (dialog, which) -> {
                         NumberCache.setNumber(this, new NumberModel(item.getPhone()));
                         Toast.makeText(this, "설정되었습니다.", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(this, MainForOpenActivity.class));
                         this.finish();
                     }).show();
         });

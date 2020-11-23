@@ -38,6 +38,26 @@
     </style>
 
 
+    <style name="pDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">?attr/colorOnSecondary</item>
+        <item name="android:textColorPrimary">?attr/colorOnSecondary</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="fontFamily">@font/kopubm</item>
+        <item name="buttonBarNegativeButtonStyle">@style/buttonBarButtonStyle.Negative</item>
+        <item name="buttonBarPositiveButtonStyle">@style/buttonBarButtonStyle.Positive</item>
+    </style>
+
+    <style name="buttonBarButtonStyle" parent="Widget.AppCompat.Button.Borderless.Colored">
+    </style>
+
+    <style name="buttonBarButtonStyle.Negative">
+        <item name="android:textColor">@color/blue_1</item>
+    </style>
+
+    <style name="buttonBarButtonStyle.Positive">
+        <item name="android:textColor">@color/blue_1</item>
+    </style>
+
     <style name="Theme.EasyCalling.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.EasyCalling.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
