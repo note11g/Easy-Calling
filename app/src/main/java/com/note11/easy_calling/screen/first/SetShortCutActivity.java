@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.note11.easy_calling.R;
@@ -24,8 +25,6 @@ import com.note11.easy_calling.data.NumberModel;
 import com.note11.easy_calling.data.TelModel;
 import com.note11.easy_calling.databinding.ActivitySetShortCutBinding;
 import com.note11.easy_calling.util.TelAdapter;
-
-import java.util.ArrayList;
 
 public class SetShortCutActivity extends AppCompatActivity {
 
@@ -129,12 +128,19 @@ public class SetShortCutActivity extends AppCompatActivity {
     }
 
     public String inputHypun(String number) {
-        if(number.startsWith("02")) {
-            number = number.substring(0, 2) + "-" + number.substring(2, 2 + (number.length() - 2) / 2) + "-" + number.substring(2 + (number.length() - 2) / 2, number.length());
-        }else if(number.startsWith("031")) {
-            number = number.substring(0, 3) + "-" + number.substring(2, 3 + (number.length() - 3) / 2) + "-" + number.substring(3 + (number.length() - 3) / 2, number.length());
-        }else {
-            number = number.substring(0, number.length() - 8) + "-" + number.substring(number.length() - 8, number.length() - 4) + "-" + number.substring(number.length() - 4, number.length());
+        if(number.length() > 11 || number.length() <= 5) return number;
+        if(number.length() == 8) number = "010" + number;
+
+        try {
+            if (number.startsWith("02")) {
+                number = number.substring(0, 2) + "-" + number.substring(2, 2 + (number.length() - 2) / 2) + "-" + number.substring(2 + (number.length() - 2) / 2, number.length());
+            } else if (number.startsWith("031") || number.startsWith("032") || number.startsWith("097")) {
+                number = number.substring(0, 3) + "-" + number.substring(3, 3 + (number.length() - 3) / 2) + "-" + number.substring(3 + (number.length() - 3) / 2, number.length());
+            } else {
+                number = number.substring(0, number.length() - 8) + "-" + number.substring(number.length() - 8, number.length() - 4) + "-" + number.substring(number.length() - 4, number.length());
+            }
+        }catch(Exception e) {
+            Log.d("ASDF", "ERROR Phone[SetShortCut]: "+ number);
         }
 
         return number;

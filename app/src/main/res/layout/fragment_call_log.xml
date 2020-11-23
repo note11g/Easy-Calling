@@ -13,32 +13,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/txt_permission_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="24dp"
-            android:fontFamily="@font/kopubb"
-            android:text="빠른 전화걸기를 설정할\n전화번호를 고르거나, 입력해주세요"
-            android:textSize="20sp"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/blue_1"
-            app:layout_constraintBottom_toTopOf="@+id/recycler_get_log"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_get_log"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_permission_1"
-            app:tel="@{items}"
-            tools:listitem="@layout/row_tel" />
+            app:log="@{items}"
+            tools:listitem="@layout/row_log" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

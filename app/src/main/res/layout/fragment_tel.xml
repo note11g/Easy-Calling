@@ -2,24 +2,62 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android" >
-    <data>
 
+    <data>
+        <import type="androidx.databinding.ObservableArrayList"/>
+        <variable
+            name="items"
+            type="ObservableArrayList&lt;com.note11.easy_calling.data.TelModel&gt;" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
+            android:id="@+id/txt_permission_1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="연락처 화면"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginHorizontal="24dp"
+            android:fontFamily="@font/kopubb"
+            android:text="빠른 전화걸기를 설정할\n전화번호를 고르거나, 입력해주세요"
+            android:textSize="20sp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/blue_1"
+            app:layout_constraintBottom_toTopOf="@+id/txt_permission_2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/edt_permission_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:fontFamily="@font/kopubm"
+            android:hint="전화번호 또는 이름을 입력하세요"
+            android:inputType="textPersonName"
+            android:textColor="@color/black"
+            android:background="@drawable/round_corner"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_permission_1" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_set_tel"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edt_permission_1"
+            app:tel="@{items}"
+            tools:listitem="@layout/row_tel" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

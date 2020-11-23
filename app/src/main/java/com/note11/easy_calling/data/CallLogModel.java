@@ -4,8 +4,8 @@ import java.util.Calendar;
 
 public class CallLogModel {
     String name, phone, duration;
-    Calendar date;
-    int type;
+    private Calendar date;
+    private int type;
 
     public CallLogModel() { }
 

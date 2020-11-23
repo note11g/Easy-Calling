@@ -4,19 +4,25 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.CallLog;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableArrayList;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.note11.easy_calling.R;
 import com.note11.easy_calling.data.CallLogModel;
 import com.note11.easy_calling.databinding.FragmentCallLogBinding;
+import com.note11.easy_calling.util.CallLogAdapter;
 
 import java.util.Calendar;
 
@@ -44,12 +50,24 @@ public class CallLogFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_call_log, container,false);
 
-        getItems();
+        binding.recyclerGetLog.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+
+        CallLogAdapter a = new CallLogAdapter();
+
+        binding.recyclerGetLog.setAdapter(a);
+
+        it = getItems();
+
+        a.setOnItemLongClickListener((view, item) -> true);
+        a.setOnItemClickListener((view, item) -> {
+            //TODO: 전화 걸기
+        });
+        binding.setItems(it);
 
         return binding.getRoot();
     }
 
-    public void getItems() {
+    public ObservableArrayList<CallLogModel> getItems() {
         ObservableArrayList<CallLogModel> datas = new ObservableArrayList<>();
 
         String[] projection = new String[] {
@@ -72,24 +90,36 @@ public class CallLogFragment extends Fragment {
                 CallLogModel callLogModel = new CallLogModel();
                 callLogModel.setName(contacts.getString(nameFieldIndex));
                 callLogModel.setPhone(inputHypun(contacts.getString(numberFieldIndex).replaceAll("-", "")));
-                callLogModel.setDuration(contacts.getString(durationFieldIndex));
+                long dur = contacts.getLong(durationFieldIndex);
+                callLogModel.setDuration(dur/60+"분 " + dur%60+"초");
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(Long.parseLong(contacts.getString(dateFieldIndex)));
+                calendar.setTimeInMillis(contacts.getLong(dateFieldIndex));
                 callLogModel.setDate(calendar);
                 callLogModel.setType(contacts.getInt(typeFieldIndex));
 
                 datas.add(callLogModel);
             }
         }
+
+        contacts.close();
+
+        return datas;
     }
 
     public String inputHypun(String number) {
-        if(number.startsWith("02")) {
-            number = number.substring(0, 2) + "-" + number.substring(2, 2 + (number.length() - 2) / 2) + "-" + number.substring(2 + (number.length() - 2) / 2, number.length() - 1);
-        }else if(number.startsWith("031")) {
-            number = number.substring(0, 3) + "-" + number.substring(2, 3 + (number.length() - 3) / 2) + "-" + number.substring(3 + (number.length() - 3) / 2, number.length() - 1);
-        }else {
-            number = number.substring(0, number.length() - 8) + "-" + number.substring(number.length() - 8, number.length() - 4) + "-" + number.substring(number.length() - 4, number.length() - 1);
+        if(number.length() > 11 || number.length() <= 5) return number;
+        if(number.length() == 8) number = "010" + number;
+
+        try {
+            if (number.startsWith("02")) {
+                number = number.substring(0, 2) + "-" + number.substring(2, 2 + (number.length() - 2) / 2) + "-" + number.substring(2 + (number.length() - 2) / 2, number.length());
+            } else if (number.startsWith("031") || number.startsWith("032") || number.startsWith("097")) {
+                number = number.substring(0, 3) + "-" + number.substring(3, 3 + (number.length() - 3) / 2) + "-" + number.substring(3 + (number.length() - 3) / 2, number.length());
+            } else {
+                number = number.substring(0, number.length() - 8) + "-" + number.substring(number.length() - 8, number.length() - 4) + "-" + number.substring(number.length() - 4, number.length());
+            }
+        }catch(Exception e) {
+            Log.d("ASDF","ERROR Phone[CallLogFragment]: " + number);
         }
 
         return number;
