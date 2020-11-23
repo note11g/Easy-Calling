@@ -73,10 +73,10 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                 if(getBtnLength == 0) {
                     switch (isRecord) {
                         case 1:
-                            macroCallClass.keyCode = keyCache;
+                            macroCallClass.keyCode = (ArrayList<KeyData>) keyCache.clone();
                             break;
                         case 2:
-                            macroUsersClass.keyCode = keyCache;
+                            macroUsersClass.keyCode = (ArrayList<KeyData>) keyCache.clone();
                             break;
                     }
 
