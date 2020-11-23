@@ -45,7 +45,7 @@ public class CallLogFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_call_log, container,false);
 
         getItems();
-        
+
         return binding.getRoot();
     }
 
