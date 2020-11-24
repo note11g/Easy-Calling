@@ -15,7 +15,8 @@
         android:paddingHorizontal="24dp"
         android:layout_marginHorizontal="8dp"
         android:layout_marginTop="8dp"
-        android:foreground="@drawable/round_corner">
+        android:background="@drawable/round_box"
+        android:backgroundTint="#4f83cc">
 
         <TextView
             android:id="@+id/txt_todo_row_title"
@@ -23,7 +24,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/kopubb"
             android:text="@{log.name!=null ? log.name:`등록정보 없음`, default=`홍길동`}"
-            android:textColor="?attr/colorOnSecondary"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +36,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/kopubb"
             android:text="@{log.phone, default=`010-1234-5678`}"
-            android:textColor="?attr/colorOnSecondary"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/txt_todo_row_title"
             app:layout_constraintEnd_toEndOf="parent"

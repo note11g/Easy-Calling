@@ -8,9 +8,14 @@
         <variable
             name="phone"
             type="String" />
+
         <variable
             name="nowLike"
             type="com.note11.easy_calling.data.TelModel" />
+        
+        <variable
+            name="s"
+            type="com.note11.easy_calling.data.ShortModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,19 +46,19 @@
             app:layout_constraintBottom_toTopOf="@+id/constraint_dial"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edt_dial" >
+            app:layout_constraintTop_toBottomOf="@+id/edt_dial">
 
             <TextView
                 android:id="@+id/like_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                android:text="@{nowLike.name, default=`홍길동`}"
-                android:textSize="16sp"
-                android:textColor="?attr/colorOnSecondary"
-                android:fontFamily="@font/kopubb"
                 android:layout_marginEnd="4dp"
+                android:fontFamily="@font/kopubb"
+                android:text="@{nowLike.name, default=`홍길동`}"
+                android:textColor="?attr/colorOnSecondary"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/like_phone"
+                app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -61,18 +66,17 @@
                 android:id="@+id/like_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{nowLike.phone, default=`010-1234-5678`}"
-                android:textSize="15sp"
-                android:textColor="@color/materialGray7"
-                android:fontFamily="@font/kopubb"
                 android:layout_marginStart="4dp"
-                app:layout_constraintStart_toEndOf="@+id/like_name"
+                android:fontFamily="@font/kopubb"
+                android:text="@{nowLike.phone, default=`010-1234-5678`}"
+                android:textColor="@color/materialGray7"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@id/like_name"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/like_name"
-                app:layout_constraintBottom_toBottomOf="@id/like_name"/>
+                app:layout_constraintStart_toEndOf="@+id/like_name"
+                app:layout_constraintTop_toTopOf="@id/like_name" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -84,188 +88,494 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <Button
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/btn_dial_num_1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorOnPrimary"
                 android:fontFamily="@font/kopubb"
-                android:paddingVertical="16dp"
-                android:text="1"
-                android:textColor="?attr/colorOnSecondary"
+                android:paddingBottom="12dp"
+                android:paddingTop="10dp"
                 android:textSize="28sp"
-                android:theme="@style/numberPadStyle"
                 app:layout_constraintEnd_toStartOf="@+id/btn_dial_num_2"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <Button
+                <TextView
+                    android:id="@+id/txt_dial_1_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/kopubb"
+                    android:includeFontPadding="false"
+                    android:text="1"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="28sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_dial_1_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/kopubb"
+                    android:text="@{s.n1[0]}"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/txt_dial_1_1"
+                    app:layout_constraintStart_toStartOf="@+id/txt_dial_1_1"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_dial_1_1" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/btn_dial_num_2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorOnPrimary"
-                android:fontFamily="@font/kopubb"
-                android:paddingVertical="16dp"
-                android:text="2"
-                android:textColor="?attr/colorOnSecondary"
+                android:paddingBottom="12dp"
+                android:paddingTop="10dp"
                 android:textSize="28sp"
-                android:theme="@style/numberPadStyle"
                 app:layout_constraintEnd_toStartOf="@+id/btn_dial_num_3"
                 app:layout_constraintStart_toEndOf="@+id/btn_dial_num_1"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <Button
+                <TextView
+                    android:id="@+id/txt_dial_2_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/kopubb"
+                    android:includeFontPadding="false"
+                    android:text="2"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="28sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_dial_2_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/kopubb"
+                    android:text="@{s.n2[0]}"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/txt_dial_2_1"
+                    app:layout_constraintStart_toStartOf="@+id/txt_dial_2_1"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_dial_2_1" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/btn_dial_num_3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorOnPrimary"
                 android:fontFamily="@font/kopubb"
-                android:paddingVertical="16dp"
-                android:text="3"
-                android:textColor="?attr/colorOnSecondary"
-                android:textSize="28sp"
-                android:theme="@style/numberPadStyle"
+                android:paddingBottom="12dp"
+                android:paddingTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btn_dial_num_2"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" >
+                <TextView
+                    android:id="@+id/txt_dial_3_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/kopubb"
+                    android:includeFontPadding="false"
+                    android:text="3"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="28sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+                <TextView
+                    android:id="@+id/txt_dial_3_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/kopubb"
+                    android:text="@{s.n3[0]}"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/txt_dial_3_1"
+                    app:layout_constraintStart_toStartOf="@+id/txt_dial_3_1"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_dial_3_1" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/btn_dial_num_4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorOnPrimary"
                 android:fontFamily="@font/kopubb"
-                android:paddingVertical="16dp"
-                android:text="4"
-                android:textColor="?attr/colorOnSecondary"
-                android:textSize="28sp"
-                android:theme="@style/numberPadStyle"
+                android:paddingBottom="12dp"
+                android:paddingTop="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/btn_dial_num_5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_1" />
+                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_1" >
+                
+                <TextView
+                    android:id="@+id/txt_dial_4_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/kopubb"
+                    android:includeFontPadding="false"
+                    android:text="4"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="28sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+                <TextView
+                    android:id="@+id/txt_dial_4_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/kopubb"
+                    android:text="@{s.n4[0]}"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/txt_dial_4_1"
+                    app:layout_constraintStart_toStartOf="@+id/txt_dial_4_1"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_dial_4_1" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/btn_dial_num_5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorOnPrimary"
                 android:fontFamily="@font/kopubb"
-                android:paddingVertical="16dp"
-                android:text="5"
-                android:textColor="?attr/colorOnSecondary"
-                android:textSize="28sp"
-                android:theme="@style/numberPadStyle"
+                android:paddingBottom="12dp"
+                android:paddingTop="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/btn_dial_num_6"
                 app:layout_constraintStart_toEndOf="@+id/btn_dial_num_4"
-                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_2" />
+                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_2" >
+                <TextView
+                    android:id="@+id/txt_dial_5_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/kopubb"
+                    android:includeFontPadding="false"
+                    android:text="5"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="28sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+                <TextView
+                    android:id="@+id/txt_dial_5_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/kopubb"
+                    android:text="@{s.n5[0]}"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/txt_dial_5_1"
+                    app:layout_constraintStart_toStartOf="@+id/txt_dial_5_1"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_dial_5_1" />
+                
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/btn_dial_num_6"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorOnPrimary"
                 android:fontFamily="@font/kopubb"
-                android:paddingVertical="16dp"
-                android:text="6"
-                android:textColor="?attr/colorOnSecondary"
-                android:textSize="28sp"
-                android:theme="@style/numberPadStyle"
+                android:paddingBottom="12dp"
+                android:paddingTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btn_dial_num_5"
-                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_3" />
+                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_3" >
+                
+                <TextView
+                    android:id="@+id/txt_dial_6_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/kopubb"
+                    android:includeFontPadding="false"
+                    android:text="6"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="28sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+                <TextView
+                    android:id="@+id/txt_dial_6_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/kopubb"
+                    android:text="@{s.n6[0]}"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/txt_dial_6_1"
+                    app:layout_constraintStart_toStartOf="@+id/txt_dial_6_1"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_dial_6_1" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/btn_dial_num_7"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorOnPrimary"
                 android:fontFamily="@font/kopubb"
-                android:paddingVertical="16dp"
-                android:text="7"
-                android:textColor="?attr/colorOnSecondary"
-                android:textSize="28sp"
-                android:theme="@style/numberPadStyle"
+                android:paddingBottom="12dp"
+                android:paddingTop="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/btn_dial_num_8"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_4" />
+                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_4" >
+                
+                <TextView
+                    android:id="@+id/txt_dial_7_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/kopubb"
+                    android:includeFontPadding="false"
+                    android:text="7"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="28sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+                <TextView
+                    android:id="@+id/txt_dial_7_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/kopubb"
+                    android:text="@{s.n7[0]}"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/txt_dial_7_1"
+                    app:layout_constraintStart_toStartOf="@+id/txt_dial_7_1"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_dial_7_1" />
+                
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/btn_dial_num_8"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorOnPrimary"
                 android:fontFamily="@font/kopubb"
-                android:paddingVertical="16dp"
-                android:text="8"
-                android:textColor="?attr/colorOnSecondary"
-                android:textSize="28sp"
-                android:theme="@style/numberPadStyle"
+                android:paddingBottom="12dp"
+                android:paddingTop="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/btn_dial_num_9"
                 app:layout_constraintStart_toEndOf="@+id/btn_dial_num_7"
-                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_5" />
+                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_5" >
+                <TextView
+                    android:id="@+id/txt_dial_8_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/kopubb"
+                    android:includeFontPadding="false"
+                    android:text="8"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="28sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+                <TextView
+                    android:id="@+id/txt_dial_8_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/kopubb"
+                    android:text="@{s.n8[0]}"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/txt_dial_8_1"
+                    app:layout_constraintStart_toStartOf="@+id/txt_dial_8_1"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_dial_8_1" />
+                
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/btn_dial_num_9"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorOnPrimary"
                 android:fontFamily="@font/kopubb"
-                android:paddingVertical="16dp"
-                android:text="9"
-                android:textColor="?attr/colorOnSecondary"
-                android:textSize="28sp"
-                android:theme="@style/numberPadStyle"
+                android:paddingBottom="12dp"
+                android:paddingTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btn_dial_num_8"
-                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_6" />
+                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_6" >
 
-            <Button
+                <TextView
+                    android:id="@+id/txt_dial_9_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/kopubb"
+                    android:includeFontPadding="false"
+                    android:text="9"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="28sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_dial_9_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/kopubb"
+                    android:text="@{s.n9[0]}"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/txt_dial_9_1"
+                    app:layout_constraintStart_toStartOf="@+id/txt_dial_9_1"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_dial_9_1" />
+                
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/btn_dial_num_star"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorOnPrimary"
                 android:fontFamily="@font/kopubb"
-                android:paddingVertical="16dp"
-                android:text="*"
-                android:textColor="?attr/colorOnSecondary"
-                android:textSize="28sp"
-                android:theme="@style/numberPadStyle"
+                android:paddingBottom="12dp"
+                android:paddingTop="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btn_dial_num_0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_7" />
+                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_7" >
 
-            <Button
+                <TextView
+                    android:id="@+id/txt_dial_star_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/kopubb"
+                    android:includeFontPadding="false"
+                    android:text="*"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="28sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_dial_star_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/kopubb"
+                    android:text="@{s.ns[0]}"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/txt_dial_star_1"
+                    app:layout_constraintStart_toStartOf="@+id/txt_dial_star_1"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_dial_star_1" />
+                
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/btn_dial_num_0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorOnPrimary"
                 android:fontFamily="@font/kopubb"
-                android:paddingVertical="16dp"
-                android:text="0"
-                android:textColor="?attr/colorOnSecondary"
-                android:textSize="28sp"
-                android:theme="@style/numberPadStyle"
+                android:paddingBottom="12dp"
+                android:paddingTop="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btn_dial_num_hash"
                 app:layout_constraintStart_toEndOf="@+id/btn_dial_num_star"
-                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_8" />
+                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_8" >
+                
+                <TextView
+                    android:id="@+id/txt_dial_0_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/kopubb"
+                    android:includeFontPadding="false"
+                    android:text="0"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="28sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+                <TextView
+                    android:id="@+id/txt_dial_0_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/kopubb"
+                    android:text="@{s.n0[0]}"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/txt_dial_0_1"
+                    app:layout_constraintStart_toStartOf="@+id/txt_dial_0_1"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_dial_0_1" />
+                
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/btn_dial_num_hash"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorOnPrimary"
                 android:fontFamily="@font/kopubb"
-                android:paddingVertical="16dp"
-                android:text="#"
-                android:textColor="?attr/colorOnSecondary"
-                android:textSize="28sp"
-                android:theme="@style/numberPadStyle"
+                android:paddingBottom="12dp"
+                android:paddingTop="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btn_dial_num_0"
-                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_9" />
+                app:layout_constraintTop_toBottomOf="@id/btn_dial_num_9" >
+                
+                <TextView
+                    android:id="@+id/txt_dial_hash_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/kopubb"
+                    android:includeFontPadding="false"
+                    android:text="#"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="28sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_dial_hash_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/kopubb"
+                    android:text="@{s.nh[0]}"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/txt_dial_hash_1"
+                    app:layout_constraintStart_toStartOf="@+id/txt_dial_hash_1"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_dial_hash_1" />
+                
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -275,6 +585,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/round_box"
             android:backgroundTint="@color/materialGreen"
             android:drawableLeft="@drawable/ic_baseline_call_24"
@@ -283,7 +594,6 @@
             android:paddingVertical="12dp"
             android:text="전화걸기"
             android:textSize="16sp"
-            android:layout_marginBottom="16dp"
             android:theme="@style/callButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_dial_del"
@@ -293,19 +603,19 @@
             android:id="@+id/btn_dial_del"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="32dp"
             android:background="@drawable/round_corner"
             android:fontFamily="@font/kopubb"
             android:foreground="@drawable/round_corner"
             android:letterSpacing="0"
             android:text="지우기"
-            android:layout_marginStart="16dp"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
-            android:layout_marginEnd="32dp"
-            app:layout_constraintStart_toEndOf="@id/btn_dial_call"
             android:theme="@style/numberPadStyle"
             app:layout_constraintBottom_toBottomOf="@+id/btn_dial_call"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_dial_call"
             app:layout_constraintTop_toTopOf="@+id/btn_dial_call" />
 
 

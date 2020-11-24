@@ -1,5 +1,4 @@
-
-package com.note11.easy_calling.screen.first;
+package com.note11.easy_calling.screen.popup;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,9 +7,6 @@ import androidx.databinding.ObservableArrayList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.ContentResolver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,27 +17,27 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.note11.easy_calling.R;
-import com.note11.easy_calling.data.NumberCache;
-import com.note11.easy_calling.data.NumberModel;
 import com.note11.easy_calling.data.ShortCache;
 import com.note11.easy_calling.data.ShortModel;
 import com.note11.easy_calling.data.TelModel;
-import com.note11.easy_calling.databinding.ActivitySetShortCutBinding;
-import com.note11.easy_calling.screen.main.MainForOpenActivity;
+import com.note11.easy_calling.databinding.ActivitySetShortForDialBinding;
 import com.note11.easy_calling.util.TelAdapter;
 
-public class SetShortCutActivity extends AppCompatActivity {
+public class SetShortForDial extends AppCompatActivity {
 
-    private ActivitySetShortCutBinding binding;
+    private ActivitySetShortForDialBinding binding;
     private ObservableArrayList<TelModel> it = new ObservableArrayList<>();
-
+    private String getKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_set_short_cut);
+        setContentView(R.layout.activity_set_short_for_dial);
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_set_short_cut);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_set_short_for_dial);
+
+        getKey = getIntent().getStringExtra("key");
+
         binding.recyclerSetTel.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         TelAdapter a = new TelAdapter();
         binding.recyclerSetTel.setAdapter(a);
@@ -52,12 +48,11 @@ public class SetShortCutActivity extends AppCompatActivity {
             AlertDialog.Builder oD = new AlertDialog.Builder(this, R.style.pDialogStyle);
 
             oD.setTitle("선택 확인")
-                    .setMessage(item.getName()+"님으로 빠른 전화 걸기를 선택하시겠습니까?")
+                    .setMessage(item.getName()+"님으로 "+getKey+"의 단축번호를 선택하시겠습니까?")
                     .setNegativeButton("아니오", (dialog, which) -> { return; })
                     .setPositiveButton("예", (dialog, which) -> {
-                        NumberCache.setNumber(this, new NumberModel(item.getPhone()));
-                        Toast.makeText(this, "설정되었습니다.", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(this, MainForOpenActivity.class));
+                        setShort(getKey, item);
+                        Toast.makeText(this, "설정이 완료되었습니다!", Toast.LENGTH_SHORT).show();
                         this.finish();
                     }).show();
         });
@@ -150,7 +145,69 @@ public class SetShortCutActivity extends AppCompatActivity {
         return number;
     }
 
+    private void setShort(String padNum, TelModel t){
 
-    @Override
-    public void onBackPressed() { return; }
+        ShortModel r;
+        String[] i = {t.getName(),t.getPhone()};
+
+        if(ShortCache.getShort(this)!=null){
+            r = ShortCache.getShort(this);
+            ShortCache.clear(this);
+        }else{
+            r = new ShortModel(
+                    new String[]{"",""},
+                    new String[]{"",""},
+                    new String[]{"",""},
+                    new String[]{"",""},
+                    new String[]{"",""},
+                    new String[]{"",""},
+                    new String[]{"",""},
+                    new String[]{"",""},
+                    new String[]{"",""},
+                    new String[]{"",""},
+                    new String[]{"",""},
+                    new String[]{"",""}
+            );
+        }
+        switch (padNum){
+            case "1":
+                r.setN1(i);
+                break;
+            case "2":
+                r.setN2(i);
+                break;
+            case "3":
+                r.setN3(i);
+                break;
+            case "4":
+                r.setN4(i);
+                break;
+            case "5":
+                r.setN5(i);
+                break;
+            case "6":
+                r.setN6(i);
+                break;
+            case "7":
+                r.setN7(i);
+                break;
+            case "8":
+                r.setN8(i);
+                break;
+            case "9":
+                r.setN9(i);
+                break;
+            case "*":
+                r.setNs(i);
+                break;
+            case "0":
+                r.setN0(i);
+                break;
+            case "#":
+                r.setNh(i);
+                break;
+        }
+
+        ShortCache.setShort(this, r);
+    }
 }

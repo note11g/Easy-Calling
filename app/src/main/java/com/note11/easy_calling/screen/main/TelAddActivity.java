@@ -7,6 +7,7 @@ import android.content.ContentProviderOperation;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
+import android.widget.Toast;
 
 import com.note11.easy_calling.R;
 import com.note11.easy_calling.databinding.ActivityTelAddBinding;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 
 public class TelAddActivity extends AppCompatActivity {
 
-    ActivityTelAddBinding binding;
+    private ActivityTelAddBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +24,13 @@ public class TelAddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tel_add);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tel_add);
-        binding.addContentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = binding.setNameEdt.getText().toString();
-                String phone = binding.setPhoneEdt.getText().toString();
-                if(!name.equals("") && phone.length() > 0) {
-                    if(addItem(phone, name)) finish();
+        binding.addContentBtn.setOnClickListener(v -> {
+            String name = binding.setNameEdt.getText().toString();
+            String phone = binding.setPhoneEdt.getText().toString();
+            if(!name.equals("") && phone.length() > 0) {
+                if(addItem(phone, name)) {
+                    Toast.makeText(this, "등록이 완료되었습니다!", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
         });

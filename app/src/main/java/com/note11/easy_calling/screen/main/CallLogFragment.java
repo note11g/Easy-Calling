@@ -81,12 +81,7 @@ public class CallLogFragment extends Fragment {
         });
         binding.setItems(it);
 
-        binding.addTelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToTelAddActivity();
-            }
-        });
+
 
         return binding.getRoot();
     }
@@ -164,9 +159,5 @@ public class CallLogFragment extends Fragment {
         return true;
     }
 
-    public void goToTelAddActivity() {
-        Intent i = new Intent(mContext.getApplicationContext(), TelAddActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
-    }
+
 }

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableArrayList;
 import androidx.fragment.app.Fragment;
@@ -55,12 +56,22 @@ public class TelFragment extends Fragment {
         binding.recyclerSetTel.setAdapter(a);
 
         it = getItems();
+        binding.setItems(it);
 
         a.setOnItemLongClickListener((view, item) -> true);
         a.setOnItemClickListener((view, item) -> {
             //TODO: 빠른 전화 연결
+            AlertDialog.Builder oD = new AlertDialog.Builder(mContext, R.style.pDialogStyle);
+            oD.setTitle("전화 걸기")
+                    .setMessage(item.getName() + "님에게 전화를 거시겠습니까?")
+                    .setNegativeButton("아니오", (dialog, which) -> {
+                        return;
+                    })
+                    .setPositiveButton("예", (dialog, which) -> startActivity(
+                            new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + item.getPhone()))
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))).show();
         });
-        binding.setItems(it);
+
 
         binding.edtPermission1.addTextChangedListener(new TextWatcher() {
             @Override
@@ -74,6 +85,8 @@ public class TelFragment extends Fragment {
                 binding.setItems(searchItems(it, editable.toString()));
             }
         });
+
+        binding.addTelBtn.setOnClickListener(v -> goToTelAddActivity());
 
         return binding.getRoot();
     }
@@ -144,5 +157,18 @@ public class TelFragment extends Fragment {
         }
 
         return number;
+    }
+
+    private void goToTelAddActivity() {
+        Intent i = new Intent(mContext.getApplicationContext(), TelAddActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        it = getItems();
+        binding.setItems(it);
     }
 }

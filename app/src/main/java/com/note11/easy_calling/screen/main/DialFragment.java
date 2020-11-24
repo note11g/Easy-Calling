@@ -11,18 +11,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.note11.easy_calling.R;
 import com.note11.easy_calling.data.NumberCache;
+import com.note11.easy_calling.data.ShortCache;
+import com.note11.easy_calling.data.ShortModel;
 import com.note11.easy_calling.data.TelModel;
 import com.note11.easy_calling.databinding.FragmentDialBinding;
+import com.note11.easy_calling.screen.popup.SetShortForDial;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -70,6 +76,18 @@ public class DialFragment extends Fragment {
         binding.btnDialNum9.setOnClickListener(v -> dial("9"));
         binding.btnDialNumStar.setOnClickListener(v -> dial("*"));
         binding.btnDialNumHash.setOnClickListener(v -> dial("#"));
+        binding.btnDialNum0.setOnLongClickListener(v -> lDial("0"));
+        binding.btnDialNum1.setOnLongClickListener(v ->lDial("1"));
+        binding.btnDialNum2.setOnLongClickListener(v -> lDial("2"));
+        binding.btnDialNum3.setOnLongClickListener(v -> lDial("3"));
+        binding.btnDialNum4.setOnLongClickListener(v -> lDial("4"));
+        binding.btnDialNum5.setOnLongClickListener(v -> lDial("5"));
+        binding.btnDialNum6.setOnLongClickListener(v -> lDial("6"));
+        binding.btnDialNum7.setOnLongClickListener(v -> lDial("7"));
+        binding.btnDialNum8.setOnLongClickListener(v -> lDial("8"));
+        binding.btnDialNum9.setOnLongClickListener(v -> lDial("9"));
+        binding.btnDialNumStar.setOnLongClickListener(v -> lDial("*"));
+        binding.btnDialNumHash.setOnLongClickListener(v -> lDial("#"));
         binding.btnDialDel.setOnClickListener(v -> delDial());
         binding.btnDialCall.setOnClickListener(v -> calling());
         binding.btnDialDel.setOnLongClickListener(v -> delAll());
@@ -77,6 +95,24 @@ public class DialFragment extends Fragment {
             TelModel t = binding.getNowLike();
             if (t != null) binding.setPhone(t.getPhone());
         });
+
+        if(ShortCache.getShort(mContext)!=null)
+            binding.setS(ShortCache.getShort(mContext));
+        else
+            binding.setS(new ShortModel(
+                new String[]{"",""},
+                new String[]{"",""},
+                new String[]{"",""},
+                new String[]{"",""},
+                new String[]{"",""},
+                new String[]{"",""},
+                new String[]{"",""},
+                new String[]{"",""},
+                new String[]{"",""},
+                new String[]{"",""},
+                new String[]{"",""},
+                new String[]{"",""}
+        ));
     }
 
     private void dial(String d) {
@@ -125,6 +161,37 @@ public class DialFragment extends Fragment {
         binding.setPhone("");
         binding.setNowLike(new TelModel("", "", ""));
         isSeoul = false;
+        return true;
+    }
+
+    private boolean lDial(String s){
+        if(ShortCache.getShort(mContext)==null){
+            //단축번호 설정 창 띄우기
+            AlertDialog.Builder oD = new AlertDialog.Builder(mContext, R.style.pDialogStyle);
+            oD.setTitle("등록된 단축번호 없음")
+                    .setMessage(s+"에 단축번호를 지정하시겠어요?")
+                    .setNegativeButton("아니오", (dialog, which) -> {
+                        return;
+                    })
+                    .setPositiveButton("예", (dialog, which) ->
+                            startActivity(new Intent(mContext, SetShortForDial.class).putExtra("key",s))).show();
+        }else{
+            ShortModel r = ShortCache.getShort(mContext);
+            if(shortIsEmpty(s, r)){
+                //캐시는 있지만 해당 숫자에 없는 경우.
+                AlertDialog.Builder oD = new AlertDialog.Builder(mContext, R.style.pDialogStyle);
+                oD.setTitle("등록된 단축번호 없음")
+                        .setMessage(s+"에 단축번호를 지정하시겠어요?")
+                        .setNegativeButton("아니오", (dialog, which) -> {
+                            return;
+                        })
+                        .setPositiveButton("예", (dialog, which) ->
+                                startActivity(new Intent(mContext, SetShortForDial.class).putExtra("key",s))).show();
+            } else{
+                //있는 경우 : 번호로 걸기
+                getPhoneUsingShort(s, r);
+            }
+        }
         return true;
     }
 
@@ -178,4 +245,102 @@ public class DialFragment extends Fragment {
         return result;
     }
 
+    private boolean shortIsEmpty(String numPad, ShortModel r){
+        String get;
+        switch (numPad){
+            case "1":
+                get = r.getN1()[0];
+                break;
+            case "2":
+                get = r.getN2()[0];
+                break;
+            case "3":
+                get = r.getN3()[0];
+                break;
+            case "4":
+                get = r.getN4()[0];
+                break;
+            case "5":
+                get = r.getN5()[0];
+                break;
+            case "6":
+                get = r.getN6()[0];
+                break;
+            case "7":
+                get = r.getN7()[0];
+                break;
+            case "8":
+                get = r.getN8()[0];
+                break;
+            case "9":
+                get = r.getN9()[0];
+                break;
+            case "*":
+                get = r.getNs()[0];
+                break;
+            case "0":
+                get = r.getN0()[0];
+                break;
+            case "#":
+                get = r.getNh()[0];
+                break;
+            default:
+                get = "";
+        }
+        return get.isEmpty();
+    }
+
+    private void getPhoneUsingShort(String numPad, ShortModel r){
+        String get;
+        switch (numPad){
+            case "1":
+                get = r.getN1()[1];
+                break;
+            case "2":
+                get = r.getN2()[1];
+                break;
+            case "3":
+                get = r.getN3()[1];
+                break;
+            case "4":
+                get = r.getN4()[1];
+                break;
+            case "5":
+                get = r.getN5()[1];
+                break;
+            case "6":
+                get = r.getN6()[1];
+                break;
+            case "7":
+                get = r.getN7()[1];
+                break;
+            case "8":
+                get = r.getN8()[1];
+                break;
+            case "9":
+                get = r.getN9()[1];
+                break;
+            case "*":
+                get = r.getNs()[1];
+                break;
+            case "0":
+                get = r.getN0()[1];
+                break;
+            case "#":
+                get = r.getNh()[1];
+                break;
+            default:
+                get = "";
+        }
+        if (!get.isEmpty())
+            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + get))
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(ShortCache.getShort(mContext)!=null)
+            binding.setS(ShortCache.getShort(mContext));
+    }
 }
