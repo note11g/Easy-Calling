@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.CallLog;
 import android.text.Editable;
@@ -90,8 +91,10 @@ public class CallLogFragment extends Fragment {
                 CallLog.Calls.NUMBER,
                 CallLog.Calls.DURATION,
                 CallLog.Calls.DATE,
-                CallLog.Calls.TYPE
+                CallLog.Calls.TYPE,
+                CallLog.Calls.CACHED_PHOTO_URI
         };
+
         Cursor contacts = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, projection, null, null, null);
 
         if (contacts != null) {
@@ -100,6 +103,7 @@ public class CallLogFragment extends Fragment {
             int durationFieldIndex = contacts.getColumnIndex(CallLog.Calls.DURATION);
             int dateFieldIndex = contacts.getColumnIndex(CallLog.Calls.DATE);
             int typeFieldIndex = contacts.getColumnIndex(CallLog.Calls.TYPE);
+            int photoFieldIndex = contacts.getColumnIndex(CallLog.Calls.CACHED_PHOTO_URI);
 
             while (contacts.moveToNext()) {
                 CallLogModel callLogModel = new CallLogModel();
@@ -111,6 +115,7 @@ public class CallLogFragment extends Fragment {
                 calendar.setTimeInMillis(contacts.getLong(dateFieldIndex));
                 callLogModel.setDate(calendar);
                 callLogModel.setType(contacts.getInt(typeFieldIndex));
+                callLogModel.setPhoto(Uri.parse(contacts.getString(photoFieldIndex)));
 
                 datas.add(callLogModel);
             }
@@ -140,7 +145,7 @@ public class CallLogFragment extends Fragment {
         return number;
     }
 
-    private boolean longClick(View v, CallLogModel m){
+    private boolean longClick(View v, CallLogModel m) {
         //TODO long click
         //TODO 대체 logModel에서 type이 뭐임? 우리 부재중/수신/발신은 표시해야 됨
         Snackbar.make(v, "mtype:"+m.getType(),Snackbar.LENGTH_SHORT).show();

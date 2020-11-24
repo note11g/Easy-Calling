@@ -1,20 +1,24 @@
 package com.note11.easy_calling.data;
 
+import android.net.Uri;
+
 import java.util.Calendar;
 
 public class CallLogModel {
-    String name, phone, duration;
+    private String name, phone, duration;
     private Calendar date;
     private int type;
+    private Uri photo;
 
     public CallLogModel() { }
 
-    public CallLogModel(String name, String phone, String duration, Calendar date, int type) {
+    public CallLogModel(String name, String phone, String duration, Calendar date, int type, Uri photo) {
         this.name = name;
         this.phone = phone;
         this.duration = duration;
         this.date = date;
         this.type = type;
+        this.photo = photo;
     }
 
     public String getName() {
@@ -55,5 +59,13 @@ public class CallLogModel {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public Uri getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Uri photo) {
+        this.photo = photo;
     }
 }
