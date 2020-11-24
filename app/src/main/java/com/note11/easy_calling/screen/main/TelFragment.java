@@ -145,10 +145,4 @@ public class TelFragment extends Fragment {
 
         return number;
     }
-
-    public void goToTelAddActivity() {
-        Intent i = new Intent(mContext.getApplicationContext(), TelAddActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
-    }
 }

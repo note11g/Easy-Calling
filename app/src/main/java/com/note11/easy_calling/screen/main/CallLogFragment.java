@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -80,6 +81,13 @@ public class CallLogFragment extends Fragment {
         });
         binding.setItems(it);
 
+        binding.addTelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToTelAddActivity();
+            }
+        });
+
         return binding.getRoot();
     }
 
@@ -115,7 +123,11 @@ public class CallLogFragment extends Fragment {
                 calendar.setTimeInMillis(contacts.getLong(dateFieldIndex));
                 callLogModel.setDate(calendar);
                 callLogModel.setType(contacts.getInt(typeFieldIndex));
-                callLogModel.setPhoto(Uri.parse(contacts.getString(photoFieldIndex)));
+                String photoURI = contacts.getString(photoFieldIndex);
+                if(photoURI != null) {
+                    callLogModel.setPhoto(Uri.parse(photoURI));
+                    Log.d("TAG", "HasPhoto: " + photoURI);
+                }
 
                 datas.add(callLogModel);
             }
@@ -150,5 +162,11 @@ public class CallLogFragment extends Fragment {
         //TODO 대체 logModel에서 type이 뭐임? 우리 부재중/수신/발신은 표시해야 됨
         Snackbar.make(v, "mtype:"+m.getType(),Snackbar.LENGTH_SHORT).show();
         return true;
+    }
+
+    public void goToTelAddActivity() {
+        Intent i = new Intent(mContext.getApplicationContext(), TelAddActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 }
