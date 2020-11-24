@@ -34,6 +34,7 @@ import com.note11.easy_calling.databinding.FragmentCallLogBinding;
 import com.note11.easy_calling.util.CallLogAdapter;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 
 public class CallLogFragment extends Fragment {
@@ -71,7 +72,7 @@ public class CallLogFragment extends Fragment {
         a.setOnItemClickListener((view, item) -> {
             AlertDialog.Builder oD = new AlertDialog.Builder(mContext, R.style.pDialogStyle);
             oD.setTitle("전화 걸기")
-                    .setMessage((item.getName()!=null ? item.getName():"등록정보 없음") + "님에게 전화를 거시겠습니까?")
+                    .setMessage((item.getName() != null ? item.getName() : "등록정보 없음") + "님에게 전화를 거시겠습니까?")
                     .setNegativeButton("아니오", (dialog, which) -> {
                         return;
                     })
@@ -80,8 +81,6 @@ public class CallLogFragment extends Fragment {
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))).show();
         });
         binding.setItems(it);
-
-
 
         return binding.getRoot();
     }
@@ -119,10 +118,16 @@ public class CallLogFragment extends Fragment {
                 callLogModel.setDate(calendar);
                 callLogModel.setType(contacts.getInt(typeFieldIndex));
                 String photoURI = contacts.getString(photoFieldIndex);
-                if(photoURI != null) {
+                if (photoURI != null) {
                     callLogModel.setPhoto(Uri.parse(photoURI));
                     Log.d("TAG", "HasPhoto: " + photoURI);
                 }
+
+
+
+                //시간, 수발신 쿼리
+                callLogModel.setTyp(typToStr(contacts.getInt(typeFieldIndex)));
+                callLogModel.setDtstr(dtToStr(calendar));
 
                 datas.add(callLogModel);
             }
@@ -155,9 +160,45 @@ public class CallLogFragment extends Fragment {
     private boolean longClick(View v, CallLogModel m) {
         //TODO long click
         //TODO 대체 logModel에서 type이 뭐임? 우리 부재중/수신/발신은 표시해야 됨
-        Snackbar.make(v, "mtype:"+m.getType(),Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(v, "mtype:" + m.getType(), Snackbar.LENGTH_SHORT).show();
         return true;
     }
 
+    private String typToStr(int typ){
+        String r = "";
+        switch (typ){
+            case 1:
+                r = "걸려 온 통화";
+                break;
+            case 2:
+                r = "내가 건 통화";
+                break;
+            case 3:
+                r = "부재중 전화";
+                break;
+            case 4:
+                r = "예외";
+                break;
+            case 5:
+                r = "문자";
+                break;
+            default:
+                r = "이외";
+        }
+        return r;
+    }
+
+    private String dtToStr(Calendar c){
+        String r = "";
+        Calendar now = Calendar.getInstance();
+        if(now.get(Calendar.DATE)==c.get(Calendar.DATE)) {//오늘이라면 시간으로,
+            r += c.get(Calendar.HOUR_OF_DAY)+"시 ";
+            r += c.get(Calendar.MINUTE)+"분";
+        }else {//아니라면 날짜로
+            r += (c.get(Calendar.MONTH) + 1) + "월 ";
+            r += c.get(Calendar.DATE) + "일";
+        }
+        return r;
+    }
 
 }

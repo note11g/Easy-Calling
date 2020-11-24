@@ -26,9 +26,20 @@
             android:text="@{log.name!=null ? log.name:`등록정보 없음`, default=`홍길동`}"
             android:textColor="?attr/colorOnPrimary"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/kopubb"
+            android:text="@{log.typ, default=`내가 건 통화`}"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/txt_todo_row_title"
+            app:layout_constraintTop_toBottomOf="@+id/txt_todo_row_title" />
 
         <TextView
             android:id="@+id/txt_todo_row_date"
@@ -38,9 +49,22 @@
             android:text="@{log.phone, default=`010-1234-5678`}"
             android:textColor="?attr/colorOnPrimary"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/txt_todo_row_title"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintBottom_toTopOf="@+id/txt_row_time"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/txt_todo_row_title" />
+
+        <TextView
+            android:id="@+id/txt_row_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/kopubb"
+            android:text="@{log.dtstr, default=`18시 18분`}"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView"
+            app:layout_constraintEnd_toEndOf="@+id/txt_todo_row_date"
+            app:layout_constraintTop_toBottomOf="@+id/txt_todo_row_date" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

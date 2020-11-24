@@ -9,16 +9,19 @@ public class CallLogModel {
     private Calendar date;
     private int type;
     private Uri photo;
+    private String typ, dtstr;
 
     public CallLogModel() { }
 
-    public CallLogModel(String name, String phone, String duration, Calendar date, int type, Uri photo) {
+    public CallLogModel(String name, String phone, String duration, Calendar date, int type, Uri photo, String typ, String dtstr) {
         this.name = name;
         this.phone = phone;
         this.duration = duration;
         this.date = date;
         this.type = type;
         this.photo = photo;
+        this.typ = typ;
+        this.dtstr = dtstr;
     }
 
     public String getName() {
@@ -67,5 +70,21 @@ public class CallLogModel {
 
     public void setPhoto(Uri photo) {
         this.photo = photo;
+    }
+
+    public String getTyp() {
+        return typ;
+    }
+
+    public void setTyp(String typ) {
+        this.typ = typ;
+    }
+
+    public String getDtstr() {
+        return dtstr;
+    }
+
+    public void setDtstr(String dtstr) {
+        this.dtstr = dtstr;
     }
 }
