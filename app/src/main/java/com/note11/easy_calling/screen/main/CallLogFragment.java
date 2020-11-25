@@ -191,7 +191,7 @@ public class CallLogFragment extends Fragment {
     private String dtToStr(Calendar c){
         String r = "";
         Calendar now = Calendar.getInstance();
-        if(now.get(Calendar.DATE)==c.get(Calendar.DATE)) {//오늘이라면 시간으로,
+        if(now.get(Calendar.YEAR) == c.get(Calendar.YEAR) && now.get(Calendar.DAY_OF_YEAR)==c.get(Calendar.DAY_OF_YEAR)) {//오늘이라면 시간으로,
             r += c.get(Calendar.HOUR_OF_DAY)+"시 ";
             r += c.get(Calendar.MINUTE)+"분";
         }else {//아니라면 날짜로

@@ -23,6 +23,8 @@ public class TelAddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tel_add);
 
+        binding.setPhoneEdt.setText(getIntent().getStringExtra("getPhone"));
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tel_add);
         binding.addContentBtn.setOnClickListener(v -> {
             String name = binding.setNameEdt.getText().toString();

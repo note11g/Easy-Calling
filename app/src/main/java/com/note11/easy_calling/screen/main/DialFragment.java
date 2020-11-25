@@ -44,6 +44,8 @@ public class DialFragment extends Fragment {
 
     private ArrayList<TelModel> it = new ArrayList<>();
 
+    private final static int TEL_ADD_REQUEST = 1;
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -93,7 +95,12 @@ public class DialFragment extends Fragment {
         binding.btnDialDel.setOnLongClickListener(v -> delAll());
         binding.constraintDialLike.setOnClickListener(v -> {
             TelModel t = binding.getNowLike();
-            if (t != null) binding.setPhone(t.getPhone());
+            if (t != null) {
+                if (t.getPhone().equals("연락처에 추가") && t.getName().equals("+"))
+                    goToTelAddActivity(binding.getPhone());
+                else
+                    binding.setPhone(t.getPhone());
+            }
         });
 
         if(ShortCache.getShort(mContext)!=null)
@@ -132,8 +139,28 @@ public class DialFragment extends Fragment {
         }
 
         TelModel telModel = searchBestLike(it, binding.getPhone());
-        binding.setNowLike(telModel != null ? telModel : new TelModel("", "", ""));
+        if(telModel != null)
+            binding.setNowLike(telModel);
+        else if(binding.getPhone().length() >= 3){
+            binding.setNowLike(new TelModel("", "+", "연락처에 추가"));
+        }else {
+            binding.setNowLike(new TelModel("", "", ""));
+        }
 
+    }
+
+    private void goToTelAddActivity(String phone) {
+        Intent i = new Intent(mContext.getApplicationContext(), TelAddActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.putExtra("getPhone", phone);
+        startActivityForResult(i, TEL_ADD_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == TEL_ADD_REQUEST)
+            it = getItems();
     }
 
     private void delDial() {
@@ -146,7 +173,13 @@ public class DialFragment extends Fragment {
         }
 
         TelModel telModel = searchBestLike(it, binding.getPhone());
-        binding.setNowLike(telModel != null ? telModel : new TelModel("", "", ""));
+        if(telModel != null)
+            binding.setNowLike(telModel);
+        else if(binding.getPhone().length() >= 3){
+            binding.setNowLike(new TelModel("", "+", "연락처에 추가"));
+        }else {
+            binding.setNowLike(new TelModel("", "", ""));
+        }
     }
 
     private void calling() {
@@ -221,7 +254,7 @@ public class DialFragment extends Fragment {
                 TelModel phoneBook = new TelModel();
                 phoneBook.setId(c.getString(idIndex));
                 phoneBook.setName(c.getString(nameIndex));
-                phoneBook.setPhone(c.getString(numberIndex).replaceAll("-", ""));
+                phoneBook.setPhone(inputHypun(c.getString(numberIndex).replaceAll("-", "")));
 
                 datas.add(phoneBook);
             }
@@ -230,13 +263,32 @@ public class DialFragment extends Fragment {
         return datas;
     }
 
+    public String inputHypun(String number) {
+        if (number.length() > 11 || number.length() <= 5) return number;
+        if (number.length() == 8) number = "010" + number;
+
+        try {
+            if (number.startsWith("02")) {
+                number = number.substring(0, 2) + "-" + number.substring(2, 2 + (number.length() - 2) / 2) + "-" + number.substring(2 + (number.length() - 2) / 2, number.length());
+            } else if (number.startsWith("031") || number.startsWith("032") || number.startsWith("097")) {
+                number = number.substring(0, 3) + "-" + number.substring(3, 3 + (number.length() - 3) / 2) + "-" + number.substring(3 + (number.length() - 3) / 2, number.length());
+            } else {
+                number = number.substring(0, number.length() - 8) + "-" + number.substring(number.length() - 8, number.length() - 4) + "-" + number.substring(number.length() - 4, number.length());
+            }
+        } catch (Exception e) {
+            Log.d("ASDF", "ERROR Phone[CallLogFragment]: " + number);
+        }
+
+        return number;
+    }
+
     public TelModel searchBestLike(ArrayList<TelModel> datas, String phone) {
         phone = phone.replaceAll("-", "");
         if (phone.length() == 0) return null;
         int sublen = 9999;
         TelModel result = null;
         for (TelModel telModel : datas) {
-            if (telModel.getPhone().contains(phone) && sublen > telModel.getPhone().length() - phone.length()) {
+            if (telModel.getPhone().replaceAll("-", "").contains(phone) && sublen > telModel.getPhone().length() - phone.length()) {
                 sublen = telModel.getPhone().length() - phone.length();
                 result = telModel;
             }
