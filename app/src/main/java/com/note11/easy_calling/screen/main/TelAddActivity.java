@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.content.ContentProviderOperation;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -31,9 +32,14 @@ public class TelAddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tel_add);
 
-        binding.setPhoneEdt.setText(getIntent().getStringExtra("getPhone"));
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tel_add);
+
+        Intent pIn = getIntent();
+
+        if(pIn.getStringExtra("getPhone")!=null)
+            binding.setPhone(pIn.getStringExtra("getPhone"));
+        if(pIn.getStringExtra("getName")!=null)
+            binding.setName(pIn.getStringExtra("getName"));
 
         binding.btnAddImg.setOnClickListener(v-> TedImagePicker.with(this).start(this::setImage));
         binding.setPhoneEdt.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
@@ -89,7 +95,6 @@ public class TelAddActivity extends AppCompatActivity {
             }
             map.put(phone, binding.getProfile().toString());
             UriCache.setUri(this, new UriModel(map));
-            Toast.makeText(this, binding.getProfile().toString(), Toast.LENGTH_SHORT).show();
         }
     }
 

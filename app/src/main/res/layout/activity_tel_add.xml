@@ -4,11 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-
         <variable
             name="profile"
             type="android.net.Uri" />
+        <variable
+            name="phone"
+            type="String" />
+        <variable
+            name="name"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,6 +53,7 @@
             android:backgroundTint="@color/materialGray2"
             android:fontFamily="@font/kopubb"
             android:hint="이름을 입력하세요"
+            android:text="@={name}"
             android:inputType="textPersonName"
             android:paddingHorizontal="16dp"
             android:paddingVertical="12dp"
@@ -71,6 +76,7 @@
             android:backgroundTint="@color/materialGray2"
             android:fontFamily="@font/kopubb"
             android:hint="전화번호를 입력하세요"
+            android:text="@={phone}"
             android:inputType="phone"
             android:paddingHorizontal="16dp"
             android:paddingVertical="12dp"

@@ -20,20 +20,19 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableArrayList;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
 import com.note11.easy_calling.R;
+import com.note11.easy_calling.data.AccModel;
 import com.note11.easy_calling.data.TelModel;
 import com.note11.easy_calling.data.UriCache;
 import com.note11.easy_calling.databinding.FragmentTelBinding;
-import com.note11.easy_calling.util.TelAdapter;
+import com.note11.easy_calling.util.AccAdapter;
 
 
 public class TelFragment extends Fragment {
 
-    public static TelFragment newInstance(){
+    public static TelFragment newInstance() {
         return new TelFragment();
     }
 
@@ -41,7 +40,7 @@ public class TelFragment extends Fragment {
 
     private FragmentTelBinding binding;
 
-    private ObservableArrayList<TelModel> it = new ObservableArrayList<>();
+    private ObservableArrayList<AccModel> it = new ObservableArrayList<>();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -52,43 +51,52 @@ public class TelFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_tel, container,false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_tel, container, false);
 
-        binding.recyclerSetTel.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        GridLayoutManager gridLayoutManager =
+                new GridLayoutManager(mContext, 2);
+        binding.recyclerSetTelAcc.setLayoutManager(gridLayoutManager);
 
-        if(UriCache.getUri(mContext)!=null)
-            Toast.makeText(mContext, UriCache.getUri(mContext).getMap().toString(), Toast.LENGTH_SHORT).show();
-
-        TelAdapter a = new TelAdapter();
-        binding.recyclerSetTel.setAdapter(a);
+        AccAdapter a = new AccAdapter();
+        binding.recyclerSetTelAcc.setAdapter(a);
 
         it = getItems();
-        binding.setItems(it);
+        binding.setItem(it);
 
-        a.setOnItemLongClickListener((view, item) -> true);
+        a.setOnItemLongClickListener((view, item) -> {
+            Toast.makeText(mContext, "연락처 수정화면으로 이동합니다", Toast.LENGTH_SHORT).show();
+
+            Intent i = new Intent(mContext, TelAddActivity.class);
+            i.putExtra("getPhone", item.getTm().getPhone());
+            i.putExtra("getName", item.getTm().getName());
+            startActivity(i);
+            return true;
+        });
         a.setOnItemClickListener((view, item) -> {
             AlertDialog.Builder oD = new AlertDialog.Builder(mContext, R.style.pDialogStyle);
             oD.setTitle("전화 걸기")
-                    .setMessage(item.getName() + "님에게 전화를 거시겠습니까?")
+                    .setMessage(item.getTm().getName() + "님에게 전화를 거시겠습니까?")
                     .setNegativeButton("아니오", (dialog, which) -> {
                         return;
                     })
                     .setPositiveButton("예", (dialog, which) -> startActivity(
-                            new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + item.getPhone()))
+                            new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + item.getTm().getPhone()))
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))).show();
         });
 
 
         binding.edtPermission1.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                binding.setItems(searchItems(it, editable.toString()));
+                binding.setItem(searchItems(it, editable.toString()));
             }
         });
 
@@ -97,24 +105,24 @@ public class TelFragment extends Fragment {
         return binding.getRoot();
     }
 
-    public ObservableArrayList<TelModel> searchItems(ObservableArrayList<TelModel> items, String search) {
-        if(search == null || search.replaceAll(" ", "").equals("")) return items;
+    public ObservableArrayList<AccModel> searchItems(ObservableArrayList<AccModel> items, String search) {
+        if (search == null || search.replaceAll(" ", "").equals("")) return items;
 
-        ObservableArrayList<TelModel> results = new ObservableArrayList<>();
+        ObservableArrayList<AccModel> results = new ObservableArrayList<>();
 
-        for(TelModel telModel : items) {
-            if(telModel.getName().toUpperCase().contains(search.toUpperCase()) ||
-                    telModel.getName().toUpperCase().contains(search.replaceAll(" ", "").toUpperCase()) ||
-                    telModel.getPhone().replaceAll("-", "").contains(search.replaceAll(" ", "").replaceAll("-", ""))
+        for (AccModel accModel : items) {
+            if (accModel.getTm().getName().toUpperCase().contains(search.toUpperCase()) ||
+                    accModel.getTm().getName().toUpperCase().contains(search.replaceAll(" ", "").toUpperCase()) ||
+                    accModel.getTm().getPhone().replaceAll("-", "").contains(search.replaceAll(" ", "").replaceAll("-", ""))
             )
-                results.add(telModel);
+                results.add(accModel);
         }
 
         return results;
     }
 
-    public ObservableArrayList<TelModel> getItems() {
-        ObservableArrayList<TelModel> datas = new ObservableArrayList<>();
+    public ObservableArrayList<AccModel> getItems() {
+        ObservableArrayList<AccModel> datas = new ObservableArrayList<>();
 
         Uri phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
 
@@ -135,11 +143,20 @@ public class TelFragment extends Fragment {
             while (c.moveToNext()) {
                 //using index, get Phone Data
                 TelModel phoneBook = new TelModel();
+                String p = inputHypun(c.getString(numberIndex).replaceAll("-", ""));
                 phoneBook.setId(c.getString(idIndex));
                 phoneBook.setName(c.getString(nameIndex));
-                phoneBook.setPhone(inputHypun(c.getString(numberIndex).replaceAll("-", "")));
+                phoneBook.setPhone(p);
 
-                datas.add(phoneBook);
+                AccModel a = new AccModel();
+                a.setTm(phoneBook);
+
+                if (UriCache.getUri(mContext) != null && UriCache.getUri(mContext).getMap().get(p) != null)
+                    a.setIu(UriCache.getUri(mContext).getMap().get(p));
+                else
+                    a.setIu(null);
+
+                datas.add(a);
             }
             c.close();//Data close
         }
@@ -147,8 +164,8 @@ public class TelFragment extends Fragment {
     }
 
     public String inputHypun(String number) {
-        if(number.length() > 11 || number.length() <= 5) return number;
-        if(number.length() == 8) number = "010" + number;
+        if (number.length() > 11 || number.length() <= 5) return number;
+        if (number.length() == 8) number = "010" + number;
 
         try {
             if (number.startsWith("02")) {
@@ -158,8 +175,8 @@ public class TelFragment extends Fragment {
             } else {
                 number = number.substring(0, number.length() - 8) + "-" + number.substring(number.length() - 8, number.length() - 4) + "-" + number.substring(number.length() - 4, number.length());
             }
-        }catch(Exception e) {
-            Log.d("ASDF", "ERROR Phone[SetShortCut]: "+ number);
+        } catch (Exception e) {
+            Log.d("ASDF", "ERROR Phone[SetShortCut]: " + number);
         }
 
         return number;
@@ -171,10 +188,11 @@ public class TelFragment extends Fragment {
         startActivity(i);
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
         it = getItems();
-        binding.setItems(it);
+        binding.setItem(it);
     }
 }

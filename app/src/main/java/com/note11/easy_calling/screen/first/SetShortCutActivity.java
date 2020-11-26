@@ -35,7 +35,7 @@ public class SetShortCutActivity extends AppCompatActivity {
     private ActivitySetShortCutBinding binding;
     private ObservableArrayList<TelModel> it = new ObservableArrayList<>();
 
-
+    //TODO 설명 액티비티 만들기, 기획서 쓰기
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -6,7 +6,6 @@
     <data>
 
         <import type="androidx.databinding.ObservableArrayList" />
-
         <variable
             name="item"
             type="ObservableArrayList&lt;com.note11.easy_calling.data.AccModel&gt;" />
@@ -28,51 +27,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/kopubb"
-                android:text="연락처"
+                android:text="빠른 전화 걸기"
                 android:textColor="?attr/colorOnSecondary"
                 android:textSize="18sp" />
         </Toolbar>
 
-        <EditText
-            android:id="@+id/edt_permission_1"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_fast"
+            acc="@{item}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            tools:listitem="@layout/row_fast" />
+
+        <TextView
+            android:id="@+id/txt_fast_non"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/round_corner"
-            android:fontFamily="@font/kopubm"
-            android:hint="전화번호 또는 이름을 입력하세요"
-            android:inputType="textPersonName"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="12dp"
-            android:textColor="@color/black"
-            android:textSize="16sp"
+            android:gravity="center"
+            android:text="아직 단축번호가 추가되지 않았어요.\n앱에서 숫자를 길게 눌러 추가해주세요."
+            app:layout_constraintBottom_toBottomOf="@+id/recycler_fast"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_set_tel_acc"
-            acc="@{item}"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edt_permission_1"
-            tools:listitem="@layout/row_acc" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addTelBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="24dp"
-            android:src="@drawable/ic_baseline_add_24"
-            app:backgroundTint="?colorOnPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

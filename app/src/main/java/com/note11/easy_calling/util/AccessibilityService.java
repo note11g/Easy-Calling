@@ -9,6 +9,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
 
 import com.note11.easy_calling.data.NumberCache;
+import com.note11.easy_calling.screen.popup.PopupDownActivity;
 import com.note11.easy_calling.screen.test.GetPhonesActivity;
 
 import java.util.ArrayList;
@@ -181,7 +182,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                 if (!(keyData.isStatus && keyData.isClickNow))
                     return;
             }
-            Intent i = new Intent(getApplicationContext(), GetPhonesActivity.class);
+            Intent i = new Intent(getApplicationContext(), PopupDownActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
         }
