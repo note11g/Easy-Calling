@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,8 +22,11 @@ import androidx.databinding.ObservableArrayList;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.note11.easy_calling.R;
 import com.note11.easy_calling.data.TelModel;
+import com.note11.easy_calling.data.UriCache;
 import com.note11.easy_calling.databinding.FragmentTelBinding;
 import com.note11.easy_calling.util.TelAdapter;
 
@@ -52,6 +56,9 @@ public class TelFragment extends Fragment {
 
         binding.recyclerSetTel.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
 
+        if(UriCache.getUri(mContext)!=null)
+            Toast.makeText(mContext, UriCache.getUri(mContext).getMap().toString(), Toast.LENGTH_SHORT).show();
+
         TelAdapter a = new TelAdapter();
         binding.recyclerSetTel.setAdapter(a);
 
@@ -60,7 +67,6 @@ public class TelFragment extends Fragment {
 
         a.setOnItemLongClickListener((view, item) -> true);
         a.setOnItemClickListener((view, item) -> {
-            //TODO: 빠른 전화 연결
             AlertDialog.Builder oD = new AlertDialog.Builder(mContext, R.style.pDialogStyle);
             oD.setTitle("전화 걸기")
                     .setMessage(item.getName() + "님에게 전화를 거시겠습니까?")

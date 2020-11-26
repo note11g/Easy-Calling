@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,20 +15,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EasyCalling">
-        <activity android:name=".screen.popup.SetShortForDial"></activity>
-        <activity android:name=".screen.main.TelAddActivity" />
+        <activity android:name=".screen.popup.SetShortForDial"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".screen.main.TelAddActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
         <activity android:name=".GetCallLogActivity" />
-        <activity android:name=".screen.first.SetShortCutActivity" />
-        <activity android:name=".screen.main.MainForOpenActivity">
+        <activity android:name=".screen.first.SetShortCutActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".screen.main.MainForOpenActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".screen.test.GetPhonesActivity" />
-        <activity android:name=".screen.first.GetPermission" />
-        <activity android:name=".screen.test.MainActivity" />
+        <activity android:name=".screen.test.GetPhonesActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".screen.first.GetPermission"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".screen.test.MainActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".util.AccessibilityService"

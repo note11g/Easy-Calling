@@ -68,7 +68,7 @@ public class CallLogFragment extends Fragment {
 
         it = getItems();
 
-        a.setOnItemLongClickListener(this::longClick);
+        a.setOnItemLongClickListener((view, item) -> true);
         a.setOnItemClickListener((view, item) -> {
             AlertDialog.Builder oD = new AlertDialog.Builder(mContext, R.style.pDialogStyle);
             oD.setTitle("전화 걸기")
@@ -124,7 +124,6 @@ public class CallLogFragment extends Fragment {
                 }
 
 
-
                 //시간, 수발신 쿼리
                 callLogModel.setTyp(typToStr(contacts.getInt(typeFieldIndex)));
                 callLogModel.setDtstr(dtToStr(calendar));
@@ -157,16 +156,10 @@ public class CallLogFragment extends Fragment {
         return number;
     }
 
-    private boolean longClick(View v, CallLogModel m) {
-        //TODO long click
-        //TODO 대체 logModel에서 type이 뭐임? 우리 부재중/수신/발신은 표시해야 됨
-        Snackbar.make(v, "mtype:" + m.getType(), Snackbar.LENGTH_SHORT).show();
-        return true;
-    }
 
-    private String typToStr(int typ){
+    private String typToStr(int typ) {
         String r = "";
-        switch (typ){
+        switch (typ) {
             case 1:
                 r = "걸려 온 통화";
                 break;
@@ -176,25 +169,23 @@ public class CallLogFragment extends Fragment {
             case 3:
                 r = "부재중 전화";
                 break;
-            case 4:
-                r = "예외";
-                break;
             case 5:
                 r = "문자";
                 break;
             default:
-                r = "이외";
+                r = "";
         }
         return r;
     }
 
-    private String dtToStr(Calendar c){
+    private String dtToStr(Calendar c) {
         String r = "";
         Calendar now = Calendar.getInstance();
-        if(now.get(Calendar.YEAR) == c.get(Calendar.YEAR) && now.get(Calendar.DAY_OF_YEAR)==c.get(Calendar.DAY_OF_YEAR)) {//오늘이라면 시간으로,
-            r += c.get(Calendar.HOUR_OF_DAY)+"시 ";
-            r += c.get(Calendar.MINUTE)+"분";
-        }else {//아니라면 날짜로
+
+        if (now.get(Calendar.YEAR) == c.get(Calendar.YEAR) && now.get(Calendar.DAY_OF_YEAR) == c.get(Calendar.DAY_OF_YEAR)) {
+            r += c.get(Calendar.HOUR_OF_DAY) + "시 ";
+            r += c.get(Calendar.MINUTE) + "분";
+        } else {
             r += (c.get(Calendar.MONTH) + 1) + "월 ";
             r += c.get(Calendar.DATE) + "일";
         }
